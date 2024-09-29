@@ -1,0 +1,4 @@
+
+
+open class BaseApiTest : BaseTest() {
+}
