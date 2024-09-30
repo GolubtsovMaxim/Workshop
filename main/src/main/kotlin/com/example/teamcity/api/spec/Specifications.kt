@@ -1,11 +1,8 @@
-package teamcity.api.spec
-
 import io.restassured.builder.RequestSpecBuilder
 import io.restassured.filter.log.RequestLoggingFilter
 import io.restassured.filter.log.ResponseLoggingFilter
 import io.restassured.http.ContentType
 import io.restassured.specification.RequestSpecification
-import teamcity.api.models.User
 
 class Specifications private constructor() {
     companion object{
