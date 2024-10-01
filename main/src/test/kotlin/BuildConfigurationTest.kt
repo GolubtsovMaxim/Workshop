@@ -1,6 +1,8 @@
+import com.example.teamcity.api.BaseApiTest
+import com.example.teamcity.api.models.User
 import io.restassured.RestAssured
 import org.apache.http.HttpStatus
-import kotlin.test.Test
+import org.testng.annotations.Test
 
 class BuildConfigurationTest : BaseApiTest() {
 
