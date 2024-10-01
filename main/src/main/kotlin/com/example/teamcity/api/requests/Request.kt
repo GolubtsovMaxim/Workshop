@@ -1,6 +1,7 @@
 package com.example.teamcity.api.requests
 
+import com.example.teamcity.api.enums.Endpoint
 import io.restassured.specification.RequestSpecification
 
-class Request(private val spec: RequestSpecification) {
+open class Request(val spec: RequestSpecification, val endpoint: Endpoint) {
 }
