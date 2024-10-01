@@ -4,7 +4,6 @@ import com.example.teamcity.api.enums.Endpoint
 import com.example.teamcity.api.models.BaseModel
 import com.example.teamcity.api.requests.Request
 import com.example.teamcity.api.requests.unchecked.UncheckedBase
-import io.restassured.response.Response
 import io.restassured.specification.RequestSpecification
 import org.apache.http.HttpStatus
 
