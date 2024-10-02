@@ -1,3 +1,4 @@
+import com.example.teamcity.api.models.User
 import io.restassured.builder.RequestSpecBuilder
 import io.restassured.filter.log.RequestLoggingFilter
 import io.restassured.filter.log.ResponseLoggingFilter
@@ -18,12 +19,21 @@ class Specifications private constructor() {
             addFilter(ResponseLoggingFilter())
             setContentType(ContentType.JSON)
             setAccept(ContentType.JSON)
+
         }
     }
 
     fun authSpec(user : User) : RequestSpecification {
+        println("http://${user.username}:${user.password}@{${Config.getProperty("host")}}")
         return reqBuilder()
-                .setBaseUri("http://" + user.username + ":" + user.password + "@" + Config.getProperty("host"))
+                .setBaseUri("http://${user.username}:${user.password}@{${Config.getProperty("host")}}")
+                .build()
+    }
+
+    public fun superUserAuth() : RequestSpecification {
+        println("http://:${Config.getProperty("superUserToken")}@${Config.getProperty("host")}/httpAuth")
+        return reqBuilder()
+                .setBaseUri("http://:${Config.getProperty("superUserToken")}@${Config.getProperty("host")}/httpAuth")
                 .build()
     }
 
