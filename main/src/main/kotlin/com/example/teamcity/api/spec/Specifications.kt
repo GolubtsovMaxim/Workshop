@@ -19,18 +19,21 @@ class Specifications private constructor() {
             addFilter(ResponseLoggingFilter())
             setContentType(ContentType.JSON)
             setAccept(ContentType.JSON)
+
         }
     }
 
     fun authSpec(user : User) : RequestSpecification {
+        println("http://${user.username}:${user.password}@{${Config.getProperty("host")}}")
         return reqBuilder()
                 .setBaseUri("http://${user.username}:${user.password}@{${Config.getProperty("host")}}")
                 .build()
     }
 
-    fun superUserAuth() : RequestSpecification {
+    public fun superUserAuth() : RequestSpecification {
+        println("http://:${Config.getProperty("superUserToken")}@${Config.getProperty("host")}/httpAuth")
         return reqBuilder()
-                .setBaseUri("http://:${Config.getProperty("host")}/httpAuth")
+                .setBaseUri("http://:${Config.getProperty("superUserToken")}@${Config.getProperty("host")}/httpAuth")
                 .build()
     }
 
