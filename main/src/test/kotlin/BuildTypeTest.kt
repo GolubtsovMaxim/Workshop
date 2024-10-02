@@ -1,5 +1,6 @@
 import com.example.teamcity.api.BaseApiTest
 import com.example.teamcity.api.enums.Endpoint
+import com.example.teamcity.api.generators.TestDataGenerator.generate
 import com.example.teamcity.api.models.User
 import com.example.teamcity.api.requests.checked.CheckedBase
 import io.qameta.allure.Allure
@@ -9,10 +10,13 @@ import io.qameta.allure.Allure.step
 
 @Test(groups = ["Regression"])
 class BuildTypeTest : BaseApiTest() {
+
+
+
     @Test(description = "User should be able to create build type", groups = ["Positive", "CRUD"])
     fun userCreatesBuildTypeTest() {
         step("Create user", Allure.ThrowableRunnableVoid {
-            val user = User(username = "name123", password = "password123")
+            val user = generate(User::class.java)
             val requester = CheckedBase<User>(Specifications.retriveSpec().superUserAuth(), Endpoint.USERS)
 
             requester.create(user)
