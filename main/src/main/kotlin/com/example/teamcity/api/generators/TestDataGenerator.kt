@@ -11,7 +11,7 @@ object TestDataGenerator {
     fun <T : BaseModel> generate(
         generatedModels: List<BaseModel>,
         generatorClass: Class<T>,
-        vararg parameters: Any
+        vararg parameters: Any?
     ): T {
         return try {
             val instance = generatorClass.getDeclaredConstructor().newInstance()

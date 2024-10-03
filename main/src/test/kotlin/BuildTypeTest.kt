@@ -5,7 +5,10 @@ import com.example.teamcity.api.models.BuildType
 import com.example.teamcity.api.models.Project
 import com.example.teamcity.api.models.User
 import com.example.teamcity.api.requests.checked.CheckedRequests
+import com.example.teamcity.api.requests.unchecked.UncheckedBase
 import io.qameta.allure.Allure.step
+import org.apache.http.HttpStatus
+import org.hamcrest.Matchers
 import org.testng.annotations.Test
 
 @Test(groups = ["Regression"])
@@ -22,10 +25,8 @@ class BuildTypeTest : BaseApiTest() {
         val userCheckRequests = CheckedRequests(Specifications.retriveSpec().authSpec(user))
 
         var projectLocal = generate(Project::class.java)
-        //val projectId = AtomicReference<String>("")
 
         projectLocal = (userCheckRequests.getRequest(Endpoint.PROJECT)?.create(projectLocal)) as Project
-        projectLocal.locator = null
 
         val buildType = generate(listOf<Project>(projectLocal), BuildType::class.java)
 
@@ -37,11 +38,28 @@ class BuildTypeTest : BaseApiTest() {
 
     @Test(description = "User should not be able to create two build types with the same id", groups = ["Negative", "CRUD"])
     fun userCreatesTwoBuildTypesWithTheSameIdTest() {
-        step("Create user")
-        step("Create project by user")
-        step("Create buildType1 for project by user")
-        step("Create buildType2 with same id as buildType1 for project by user")
-        step("Check buildType2 was not created with bad request code")
+        //step("Create user")
+        val user = generate(User::class.java)
+        superUserCheckRequests.getRequest(Endpoint.USERS)?.create(user)
+        //step("Create project by user")
+        val userCheckRequests = CheckedRequests(Specifications.retriveSpec().authSpec(user))
+
+        var projectLocal = generate(Project::class.java)
+        projectLocal = (userCheckRequests.getRequest(Endpoint.PROJECT)?.create(projectLocal)) as Project
+
+        //step("Create buildType1 for project by user")
+        val buildType1 = generate(listOf<Project>(projectLocal), BuildType::class.java)
+        //step("Create buildType2 with same id as buildType1 for project by user")
+        val buildType2 = generate(listOf<Project>(projectLocal), BuildType::class.java, buildType1.id)
+
+        userCheckRequests.getRequest(Endpoint.BUILD_TYPES)?.create(buildType1)
+        //step("Check buildType2 was not created with bad request code")
+        UncheckedBase(Specifications.retriveSpec().authSpec(user), Endpoint.BUILD_TYPES)
+            .create(buildType2)
+            .then()
+            .assertThat()
+            .statusCode(HttpStatus.SC_BAD_REQUEST)
+            .body(Matchers.containsString("The build configuration / template ID \"${buildType1.id}\" is already used by another configuration or template"))
     }
 
     @Test(description = "Project admin should be able to create build type for their project", groups = ["Positive", "Roles"])
