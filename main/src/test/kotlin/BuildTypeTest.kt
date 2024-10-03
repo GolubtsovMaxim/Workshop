@@ -4,49 +4,35 @@ import com.example.teamcity.api.generators.TestDataGenerator.generate
 import com.example.teamcity.api.models.BuildType
 import com.example.teamcity.api.models.Project
 import com.example.teamcity.api.models.User
-import com.example.teamcity.api.requests.checked.CheckedBase
-import io.qameta.allure.Allure
-import org.testng.annotations.Test
-
+import com.example.teamcity.api.requests.checked.CheckedRequests
 import io.qameta.allure.Allure.step
-import java.util.concurrent.atomic.AtomicReference
+import org.testng.annotations.Test
 
 @Test(groups = ["Regression"])
 class BuildTypeTest : BaseApiTest() {
 
-
-
     @Test(description = "User should be able to create build type", groups = ["Positive", "CRUD"])
     fun userCreatesBuildTypeTest() {
+        //generate user
         val user = generate(User::class.java)
-        step("Create user", Allure.ThrowableRunnableVoid {
-            val requester = CheckedBase<User>(Specifications.retriveSpec().superUserAuth(), Endpoint.USERS)
-            requester.create(user)
-        })
 
-        val projectLocal = generate(Project::class.java)
-        val projectId = AtomicReference<String>("")
+        //create SUPERuser
+        superUserCheckRequests.getRequest(Endpoint.USERS)?.create(user)
+        //user can send different requests
+        val userCheckRequests = CheckedRequests(Specifications.retriveSpec().authSpec(user))
 
-        step("Create project by user", Allure.ThrowableRunnableVoid{
-            val requester = CheckedBase<Project>(Specifications.retriveSpec().superUserAuth(), Endpoint.PROJECT)
-            projectId.set(requester.create(projectLocal).id)
-        })
+        var projectLocal = generate(Project::class.java)
+        //val projectId = AtomicReference<String>("")
 
-        val buildType = generate(BuildType::class.java)
+        projectLocal = (userCheckRequests.getRequest(Endpoint.PROJECT)?.create(projectLocal)) as Project
         projectLocal.locator = null
-        buildType.project = projectLocal
 
-        var requester = CheckedBase<BuildType>(Specifications.retriveSpec().authSpec(user), Endpoint.BUILD_TYPES)
-        val buildTypeId = AtomicReference<String>("")
+        val buildType = generate(listOf<Project>(projectLocal), BuildType::class.java)
 
-        step("Create buildType for project by user", Allure.ThrowableRunnableVoid {
-            buildTypeId.set(requester.create(buildType).id)
-        })
-        step("Check buildType was created successfully with correct data", Allure.ThrowableRunnableVoid {
-            val createdBuildType = requester.read(buildTypeId.get())
+        userCheckRequests.getRequest(Endpoint.BUILD_TYPES)?.create(buildType)
 
-            softy.assertEquals(buildType.name, (createdBuildType as BuildType).name, "Build type name is not correct")
-        })
+        val createdBuildType = (userCheckRequests.getRequest(Endpoint.BUILD_TYPES)?.read(buildType.id)) as BuildType
+        softy.assertEquals(buildType.name, (createdBuildType).name, "Build type name is not correct")
     }
 
     @Test(description = "User should not be able to create two build types with the same id", groups = ["Negative", "CRUD"])

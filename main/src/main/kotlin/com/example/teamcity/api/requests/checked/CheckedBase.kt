@@ -7,8 +7,10 @@ import com.example.teamcity.api.requests.unchecked.UncheckedBase
 import io.restassured.specification.RequestSpecification
 import org.apache.http.HttpStatus
 
-class CheckedBase<T: BaseModel>(spec: RequestSpecification, endpoint: Endpoint) : Request(spec, endpoint), CrudInterface {
-    val uncheckedBase : UncheckedBase = UncheckedBase(spec, endpoint)
+class CheckedBase<T: BaseModel>(spec: RequestSpecification, endpoint: Endpoint) :
+    Request(spec, endpoint), CrudInterface {
+
+        val uncheckedBase : UncheckedBase = UncheckedBase(spec, endpoint)
 
     override fun create(model: BaseModel): T {
         return uncheckedBase
@@ -17,7 +19,7 @@ class CheckedBase<T: BaseModel>(spec: RequestSpecification, endpoint: Endpoint) 
             .extract().`as`(endpoint.modelClass) as T
     }
 
-    override fun read(id: String): Any {
+    override fun read(id: String?): Any {
         return uncheckedBase
             .read(id)
             .then().assertThat().statusCode(HttpStatus.SC_OK)
