@@ -8,6 +8,6 @@ class User(
     @Random
     val username: String = "",
     @Random
-    val password: String?= ""
-) : BaseModel() {
-}
+    val password: String?= "",
+    val roles: Roles = Roles(emptyList())
+) : BaseModel()

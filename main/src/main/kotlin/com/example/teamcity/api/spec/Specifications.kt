@@ -24,13 +24,13 @@ class Specifications private constructor() {
     }
 
     fun authSpec(user : User) : RequestSpecification {
-        println("http://${user.username}:${user.password}@{${Config.getProperty("host")}}")
+        println("http://${user.username}:${user.password}@${Config.getProperty("host")}")
         return reqBuilder()
-                .setBaseUri("http://${user.username}:${user.password}@{${Config.getProperty("host")}}")
+                .setBaseUri("http://${user.username}:${user.password}@${Config.getProperty("host")}")
                 .build()
     }
 
-    public fun superUserAuth() : RequestSpecification {
+    fun superUserAuth() : RequestSpecification {
         println("http://:${Config.getProperty("superUserToken")}@${Config.getProperty("host")}/httpAuth")
         return reqBuilder()
                 .setBaseUri("http://:${Config.getProperty("superUserToken")}@${Config.getProperty("host")}/httpAuth")

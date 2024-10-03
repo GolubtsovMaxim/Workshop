@@ -13,4 +13,8 @@ object RandomData {
     fun getString(length: Int): String {
         return TEST_PREFIX + RandomStringUtils.randomAlphabetic(kotlin.math.max(length - TEST_PREFIX.length, MAX_LENGTH))
     }
+
+    fun getInt(): Int {
+        return (0..10000).random()
+    }
 }
