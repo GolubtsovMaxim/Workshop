@@ -7,7 +7,8 @@ import io.restassured.RestAssured
 import io.restassured.response.Response
 import io.restassured.specification.RequestSpecification
 
-class UncheckedBase(spec: RequestSpecification, endpoint: Endpoint) : Request(spec, endpoint), CrudInterface {
+class UncheckedBase(spec: RequestSpecification, endpoint: Endpoint) :
+    Request(spec, endpoint), CrudInterface {
     override fun create(model: BaseModel): Response {
         return RestAssured
             .given()
@@ -16,7 +17,7 @@ class UncheckedBase(spec: RequestSpecification, endpoint: Endpoint) : Request(sp
             .post(endpoint.url)
     }
 
-    override fun read(id: String): Response {
+    override fun read(id: String?): Response {
         return RestAssured
             .given()
             .spec(spec)

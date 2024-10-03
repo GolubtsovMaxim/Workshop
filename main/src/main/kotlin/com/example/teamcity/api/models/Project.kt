@@ -6,4 +6,4 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Project(@Random val id: String = "",
               @Random val name: String = "",
-                      var locator: String? = "_Root") : BaseModel()
+                      var locator: String? = "") : BaseModel()
