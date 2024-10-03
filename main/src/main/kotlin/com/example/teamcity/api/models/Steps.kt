@@ -1,4 +1,10 @@
 package com.example.teamcity.api.models
 
-data class Steps(val count: Int, val step: List<Step>) : BaseModel() {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class Steps(
+    val count: Int = 0,
+    val step: List<Step> = emptyList()
+) : BaseModel() {
 }

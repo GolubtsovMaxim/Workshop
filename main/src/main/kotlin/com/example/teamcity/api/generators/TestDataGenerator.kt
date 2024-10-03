@@ -28,6 +28,9 @@ object TestDataGenerator {
                         field.isAnnotationPresent(Random::class.java) && field.type == String::class.java -> {
                             field.set(instance, RandomData.getString())
                         }
+                        field.isAnnotationPresent(Random::class.java) && field.type == Int::class.java -> {
+                            field.set(instance, RandomData.getInt())
+                        }
                         BaseModel::class.java.isAssignableFrom(field.type) -> {
                             val finalParams = params
                             field.set(
