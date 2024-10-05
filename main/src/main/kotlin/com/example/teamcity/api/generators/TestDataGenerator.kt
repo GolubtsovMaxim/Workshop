@@ -4,6 +4,7 @@ import com.example.teamcity.api.annotations.Optional
 import com.example.teamcity.api.annotations.Parameterizable
 import com.example.teamcity.api.annotations.Random
 import com.example.teamcity.api.models.BaseModel
+import com.example.teamcity.api.models.TestData
 import java.lang.reflect.ParameterizedType
 
 object TestDataGenerator {
@@ -65,5 +66,26 @@ object TestDataGenerator {
     // Метод, чтобы сгенерировать одну сущность. Передает пустой параметр generatedModels
     fun <T : BaseModel> generate(generatorClass: Class<T>, vararg parameters: Any): T {
         return generate(emptyList(), generatorClass, *parameters)
+    }
+
+    fun generate(): TestData {
+        // итерируемся по полям TestData и для каждого наследника BaseModel
+        return try {
+            val instance = TestData::class.java.getDeclaredConstructor().newInstance()
+            val generatedModels = mutableListOf<BaseModel>()
+
+            TestData::class.java.declaredFields.forEach { field ->
+                field.isAccessible = true
+                if (BaseModel::class.java.isAssignableFrom(field.type)) {
+                    val generatedModel = generate(generatedModels, field.type.asSubclass(BaseModel::class.java))
+                    field.set(instance, generatedModel)
+                    generatedModels.add(generatedModel)
+                }
+                field.isAccessible = false
+            }
+            instance
+        } catch (e: Exception) {
+            throw IllegalStateException("Cannot generate test data", e)
+        }
     }
 }

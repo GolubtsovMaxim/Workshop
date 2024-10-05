@@ -3,7 +3,6 @@ import com.example.teamcity.api.enums.Endpoint
 import com.example.teamcity.api.generators.TestDataGenerator.generate
 import com.example.teamcity.api.models.BuildType
 import com.example.teamcity.api.models.Project
-import com.example.teamcity.api.models.User
 import com.example.teamcity.api.requests.checked.CheckedRequests
 import com.example.teamcity.api.requests.unchecked.UncheckedBase
 import io.qameta.allure.Allure.step
@@ -16,50 +15,36 @@ class BuildTypeTest : BaseApiTest() {
 
     @Test(description = "User should be able to create build type", groups = ["Positive", "CRUD"])
     fun userCreatesBuildTypeTest() {
-        //generate user
-        val user = generate(User::class.java)
+        //var testData = generate()
+        superUserCheckRequests.getRequest(Endpoint.USERS)?.create(testData.user)
 
-        //create SUPERuser
-        superUserCheckRequests.getRequest(Endpoint.USERS)?.create(user)
-        //user can send different requests
-        val userCheckRequests = CheckedRequests(Specifications.retriveSpec().authSpec(user))
+        val userCheckRequests = CheckedRequests(Specifications.retriveSpec().authSpec(testData.user))
 
-        var projectLocal = generate(Project::class.java)
+        (userCheckRequests.getRequest(Endpoint.PROJECT)?.create(testData.project)) as Project
 
-        projectLocal = (userCheckRequests.getRequest(Endpoint.PROJECT)?.create(projectLocal)) as Project
+        userCheckRequests.getRequest(Endpoint.BUILD_TYPES)?.create(testData.buildType)
 
-        val buildType = generate(listOf<Project>(projectLocal), BuildType::class.java)
-
-        userCheckRequests.getRequest(Endpoint.BUILD_TYPES)?.create(buildType)
-
-        val createdBuildType = (userCheckRequests.getRequest(Endpoint.BUILD_TYPES)?.read(buildType.id)) as BuildType
-        softy.assertEquals(buildType.name, (createdBuildType).name, "Build type name is not correct")
+        val createdBuildType = (userCheckRequests.getRequest(Endpoint.BUILD_TYPES)?.read(testData.buildType?.id)) as BuildType
+        softy.assertEquals(testData.buildType?.name, (createdBuildType).name, "Build type name is not correct")
     }
 
     @Test(description = "User should not be able to create two build types with the same id", groups = ["Negative", "CRUD"])
     fun userCreatesTwoBuildTypesWithTheSameIdTest() {
-        //step("Create user")
-        val user = generate(User::class.java)
-        superUserCheckRequests.getRequest(Endpoint.USERS)?.create(user)
-        //step("Create project by user")
-        val userCheckRequests = CheckedRequests(Specifications.retriveSpec().authSpec(user))
+        //var testData = generate()
+        superUserCheckRequests.getRequest(Endpoint.USERS)?.create(testData.user)
 
-        var projectLocal = generate(Project::class.java)
-        projectLocal = (userCheckRequests.getRequest(Endpoint.PROJECT)?.create(projectLocal)) as Project
+        val userCheckRequests = CheckedRequests(Specifications.retriveSpec().authSpec(testData.user))
+        (userCheckRequests.getRequest(Endpoint.PROJECT)?.create(testData.project)) as Project
 
-        //step("Create buildType1 for project by user")
-        val buildType1 = generate(listOf<Project>(projectLocal), BuildType::class.java)
-        //step("Create buildType2 with same id as buildType1 for project by user")
-        val buildType2 = generate(listOf<Project>(projectLocal), BuildType::class.java, buildType1.id)
+        val buildTypeWithSameID = generate(listOf<Project>(testData.project!!), BuildType::class.java, testData.buildType?.id)
+        userCheckRequests.getRequest(Endpoint.BUILD_TYPES)?.create(testData.buildType)
 
-        userCheckRequests.getRequest(Endpoint.BUILD_TYPES)?.create(buildType1)
-        //step("Check buildType2 was not created with bad request code")
-        UncheckedBase(Specifications.retriveSpec().authSpec(user), Endpoint.BUILD_TYPES)
-            .create(buildType2)
+        UncheckedBase(Specifications.retriveSpec().authSpec(testData.user), Endpoint.BUILD_TYPES)
+            .create(buildTypeWithSameID)
             .then()
             .assertThat()
             .statusCode(HttpStatus.SC_BAD_REQUEST)
-            .body(Matchers.containsString("The build configuration / template ID \"${buildType1.id}\" is already used by another configuration or template"))
+            .body(Matchers.containsString("The build configuration / template ID \"${testData.buildType?.id}\" is already used by another configuration or template"))
     }
 
     @Test(description = "Project admin should be able to create build type for their project", groups = ["Positive", "Roles"])
