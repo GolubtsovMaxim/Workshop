@@ -23,10 +23,10 @@ class Specifications private constructor() {
         }
     }
 
-    fun authSpec(user : User) : RequestSpecification {
-        println("http://${user.username}:${user.password}@${Config.getProperty("host")}")
+    fun authSpec(user : User?) : RequestSpecification {
+        println("http://${user?.username}:${user?.password}@${Config.getProperty("host")}")
         return reqBuilder()
-                .setBaseUri("http://${user.username}:${user.password}@${Config.getProperty("host")}")
+                .setBaseUri("http://${user?.username}:${user?.password}@${Config.getProperty("host")}")
                 .build()
     }
 

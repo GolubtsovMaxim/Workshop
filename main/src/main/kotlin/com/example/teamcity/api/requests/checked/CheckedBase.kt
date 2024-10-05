@@ -12,7 +12,7 @@ class CheckedBase<T: BaseModel>(spec: RequestSpecification, endpoint: Endpoint) 
 
         val uncheckedBase : UncheckedBase = UncheckedBase(spec, endpoint)
 
-    override fun create(model: BaseModel): T {
+    override fun create(model: BaseModel?): T {
         return uncheckedBase
             .create(model)
             .then().assertThat().statusCode(HttpStatus.SC_OK)
@@ -26,14 +26,14 @@ class CheckedBase<T: BaseModel>(spec: RequestSpecification, endpoint: Endpoint) 
             .extract().`as`(endpoint.modelClass) as T
     }
 
-    override fun update(id: String, model: BaseModel): T {
+    override fun update(id: String?, model: BaseModel?): T {
         return uncheckedBase
                 .update(id, model)
                 .then().assertThat().statusCode(HttpStatus.SC_OK)
                 .extract().`as`(endpoint.modelClass) as T
     }
 
-    override fun delete(id: String): Any {
+    override fun delete(id: String?): Any {
         return uncheckedBase
             .delete(id)
             .then().assertThat().statusCode(HttpStatus.SC_OK)

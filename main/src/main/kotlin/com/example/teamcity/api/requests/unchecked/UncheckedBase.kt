@@ -9,7 +9,7 @@ import io.restassured.specification.RequestSpecification
 
 class UncheckedBase(spec: RequestSpecification, endpoint: Endpoint) :
     Request(spec, endpoint), CrudInterface {
-    override fun create(model: BaseModel): Response {
+    override fun create(model: BaseModel?): Response {
         return RestAssured
             .given()
             .spec(spec)
@@ -24,7 +24,7 @@ class UncheckedBase(spec: RequestSpecification, endpoint: Endpoint) :
             .get(endpoint.url + "/id:$id")
     }
 
-    override fun update(id: String, model: BaseModel): Response {
+    override fun update(id: String?, model: BaseModel?): Response {
         return RestAssured
             .given()
             .body(model)
@@ -32,7 +32,7 @@ class UncheckedBase(spec: RequestSpecification, endpoint: Endpoint) :
             .put(endpoint.url + "/id:$id")
     }
 
-    override fun delete(id: String): Response {
+    override fun delete(id: String?): Response {
         return RestAssured
             .given()
             .spec(spec)
