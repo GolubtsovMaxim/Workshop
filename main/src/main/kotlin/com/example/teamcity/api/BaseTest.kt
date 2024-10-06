@@ -1,6 +1,7 @@
 package com.example.teamcity.api
 
 import com.example.teamcity.api.generators.TestDataGenerator.generate
+import com.example.teamcity.api.generators.TestDataStorage
 import com.example.teamcity.api.models.TestData
 import com.example.teamcity.api.requests.checked.CheckedRequests
 import org.testng.annotations.AfterMethod
@@ -21,5 +22,6 @@ open class BaseTest {
     @AfterMethod(alwaysRun = true)
     fun afterTest () {
         softy.assertAll()
+        TestDataStorage.deleteCreatedEntities()
     }
 }

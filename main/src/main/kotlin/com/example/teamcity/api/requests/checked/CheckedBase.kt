@@ -1,6 +1,7 @@
 package com.example.teamcity.api.requests.checked
 
 import com.example.teamcity.api.enums.Endpoint
+import com.example.teamcity.api.generators.TestDataStorage
 import com.example.teamcity.api.models.BaseModel
 import com.example.teamcity.api.requests.Request
 import com.example.teamcity.api.requests.unchecked.UncheckedBase
@@ -13,10 +14,13 @@ class CheckedBase<T: BaseModel>(spec: RequestSpecification, endpoint: Endpoint) 
         val uncheckedBase : UncheckedBase = UncheckedBase(spec, endpoint)
 
     override fun create(model: BaseModel?): T {
-        return uncheckedBase
+        val createdModel = uncheckedBase
             .create(model)
             .then().assertThat().statusCode(HttpStatus.SC_OK)
             .extract().`as`(endpoint.modelClass) as T
+
+        TestDataStorage.addCreatedEntity(endpoint, createdModel)
+        return createdModel
     }
 
     override fun read(id: String?): Any {
