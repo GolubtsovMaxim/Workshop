@@ -19,7 +19,6 @@ class Specifications private constructor() {
             addFilter(ResponseLoggingFilter())
             setContentType(ContentType.JSON)
             setAccept(ContentType.JSON)
-
         }
     }
 
