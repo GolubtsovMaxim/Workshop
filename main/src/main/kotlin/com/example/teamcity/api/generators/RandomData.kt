@@ -3,7 +3,7 @@ package com.example.teamcity.api.generators
 import org.apache.commons.lang3.RandomStringUtils
 
 object RandomData {
-    val TEST_PREFIX: String = "test_"
+    val TEST_PREFIX: String = "test_PROJECT_"
     val MAX_LENGTH: Int = 10
 
     fun getString(): String {

@@ -32,6 +32,14 @@ class UncheckedBase(spec: RequestSpecification, endpoint: Endpoint) :
             .put(endpoint.url + "/id:$id")
     }
 
+    fun updateSpecificUrl(url: String?, model: BaseModel?): Response {
+        return RestAssured
+            .given()
+            .spec(spec)
+            .body(model)
+            .put(url, model)
+    }
+
     override fun delete(id: String?): Response {
         return RestAssured
             .given()

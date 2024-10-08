@@ -77,3 +77,25 @@ Authorization: Basic Maxim SuperPassWord
   }
 }
 
+### 4. qwewqe
+
+GET http://{{host}}:8111/app/rest/projects/id:test_HCdLAnwUfQ
+Content-Type: application/json
+Accept: application/json
+Authorization: Basic Maxim SuperPassWord
+
+### 123
+
+GET http://{{host}}:8111/httpAuth/app/rest/csrf
+Authorization:
+
+### 5. update
+
+PUT http://{{host}}:8111/app/rest/projects/id:test_HCdLAnwUfQ
+Content-Type: application/json
+Authorization: Basic Maxim SuperPassWord
+
+{
+  "id": "test_HCdLAnwUfQ",
+  "description": "This is the updated project description."
+}
