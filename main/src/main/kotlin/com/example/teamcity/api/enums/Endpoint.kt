@@ -9,5 +9,4 @@ enum class Endpoint(val url: String, val modelClass: Class<out BaseModel>) {
     BUILD_TYPES("/app/rest/buildTypes", BuildType::class.java),
     PROJECT("/app/rest/projects", Project::class.java),
     USERS("/app/rest/users", User::class.java)
-    //PERMISSIONS("/app/rest/server/authSettings", )
 }
