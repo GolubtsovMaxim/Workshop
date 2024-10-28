@@ -1,23 +1,22 @@
 package ui
 
-import com.example.teamcity.api.enums.Endpoint
-import com.example.teamcity.ui.pages.LoginPage
+import com.example.teamcity.ui.pages.admin.CreateProjectPage
 import io.qameta.allure.Allure.step
 import org.testng.annotations.Test
 
 class CreateProjectTest : BaseUiTest() {
 
+    private val REPO_URL : String = "https://github.com/AlexPshe/spring-core-for-qa"
+
     @Test(description = "User should be able to create a project", groups = ["Regression"])
     fun userCreatesProject() {
-        step("Login as user")
-        superUserCheckRequests.getRequest(Endpoint.USERS)?.create(testData.user)
-        LoginPage.open().login(testData.user!!)
-        step("Open  `create project page` (http://localhost:8111/admin/createObjectMenu.html)")
-        step("Send all project parameters")
-        //step("`https://github.com/AlexPshe/spring-core-for-qa`")
-        step("Proceed")
-        step("Fix project name and build type name values")
-        step("Proceed")
+
+        loginAs(testData.user!!)
+
+        CreateProjectPage.open("_Root")
+            .createForm(REPO_URL)
+            .setupProject(testData.project!!.name, testData.buildType!!.name!!)
+
         step("Check all entities are succesfully created with correct data on API level")
         step("check that project is visible on Projects page(`http://localhost:8111/favorite/projects`)")
     }
