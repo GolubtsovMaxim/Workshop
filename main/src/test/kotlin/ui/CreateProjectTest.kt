@@ -1,5 +1,9 @@
 package ui
 
+import com.codeborne.selenide.Condition
+import com.example.teamcity.api.enums.Endpoint
+import com.example.teamcity.api.models.Project
+import com.example.teamcity.ui.pages.ProjectPage
 import com.example.teamcity.ui.pages.admin.CreateProjectPage
 import io.qameta.allure.Allure.step
 import org.testng.annotations.Test
@@ -17,7 +21,13 @@ class CreateProjectTest : BaseUiTest() {
             .createForm(REPO_URL)
             .setupProject(testData.project!!.name, testData.buildType!!.name!!)
 
-        step("Check all entities are succesfully created with correct data on API level")
+
+        var createdProject = superUserCheckRequests.getRequest(Endpoint.PROJECT)?.read("name:${testData.project!!.name}") as Project?
+        softy.assertNotNull(createdProject)
+
+        ProjectPage.open(createdProject?.id!!)
+            .title.shouldHave(Condition.exactText(testData.project!!.name))
+
         step("check that project is visible on Projects page(`http://localhost:8111/favorite/projects`)")
     }
 

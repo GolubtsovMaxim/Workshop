@@ -17,19 +17,19 @@ class UncheckedBase(spec: RequestSpecification, endpoint: Endpoint) :
             .post(endpoint.url)
     }
 
-    override fun read(id: String?): Response {
+    override fun read(locator: String?): Response {
         return RestAssured
             .given()
             .spec(spec)
-            .get(endpoint.url + "/id:$id")
+            .get(endpoint.url + "/$locator")
     }
 
-    override fun update(id: String?, model: BaseModel?): Response {
+    override fun update(locator: String?, model: BaseModel?): Response {
         return RestAssured
             .given()
             .body(model)
             .spec(spec)
-            .put(endpoint.url + "/id:$id")
+            .put(endpoint.url + "/$locator")
     }
 
     fun updateSpecificUrl(url: String?, model: BaseModel?): Response {
@@ -40,11 +40,11 @@ class UncheckedBase(spec: RequestSpecification, endpoint: Endpoint) :
             .put(url, model)
     }
 
-    override fun delete(id: String?): Response {
+    override fun delete(locator: String?): Response {
         return RestAssured
             .given()
             .spec(spec)
-            .delete(endpoint.url + "/id:$id")
+            .delete(endpoint.url + "/$locator")
     }
 
 }
