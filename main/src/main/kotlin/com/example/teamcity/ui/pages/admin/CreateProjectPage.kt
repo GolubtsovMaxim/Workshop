@@ -2,9 +2,7 @@ package com.example.teamcity.ui.pages.admin
 
 import com.codeborne.selenide.Selenide
 import com.codeborne.selenide.Selenide.`$`
-import com.codeborne.selenide.Selenide.page
 import com.codeborne.selenide.SelenideElement
-import com.example.teamcity.ui.pages.ProjectsPage
 
 open class CreateProjectPage : CreateBasePage() {
 
@@ -25,10 +23,10 @@ open class CreateProjectPage : CreateBasePage() {
         return this
     }
 
-    fun setupProject (projectName : String, buildTypeName : String) : ProjectsPage {
+    fun setupProject (projectName : String, buildTypeName : String) {
         projectNameInput.`val`(projectName)
         buildTypeNameInput.`val`(buildTypeName)
         submitButton.click()
-        return page(ProjectsPage::class.java)
+        //return page(ProjectsPage::class.java)
     }
 }

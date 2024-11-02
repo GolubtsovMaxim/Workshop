@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition
 import com.example.teamcity.api.enums.Endpoint
 import com.example.teamcity.api.models.Project
 import com.example.teamcity.ui.pages.ProjectPage
+import com.example.teamcity.ui.pages.ProjectsPage
 import com.example.teamcity.ui.pages.admin.CreateProjectPage
 import io.qameta.allure.Allure.step
 import org.testng.annotations.Test
@@ -27,6 +28,11 @@ class CreateProjectTest : BaseUiTest() {
 
         ProjectPage.open(createdProject?.id!!)
             .title.shouldHave(Condition.exactText(testData.project!!.name))
+
+        val foundProjects = ProjectsPage.open().getProjects().any {
+                it.name.text == testData.project!!.name }
+
+        softy.assertTrue(foundProjects)
 
         step("check that project is visible on Projects page(`http://localhost:8111/favorite/projects`)")
     }
