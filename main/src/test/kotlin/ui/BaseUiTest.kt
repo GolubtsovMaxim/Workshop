@@ -11,6 +11,8 @@ import org.testng.annotations.BeforeSuite
 
 open class BaseUiTest : BaseTest() {
 
+    protected val REPO_URL : String = "https://github.com/AlexPshe/spring-core-for-qa"
+
     @BeforeSuite(alwaysRun = true)
     fun setupUiTest() {
         Configuration.browser = Config.getProperty("browser")
