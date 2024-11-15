@@ -3,6 +3,7 @@ package ui
 import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Selenide.`$$`
 import com.example.teamcity.api.enums.Endpoint
+import com.example.teamcity.api.models.BuildType
 import com.example.teamcity.api.models.Project
 import com.example.teamcity.ui.pages.ProjectPage
 import com.example.teamcity.ui.pages.ProjectsPage
@@ -43,6 +44,9 @@ class CreateBuildConfigurationTest : BaseUiTest() {
             .first()
 
         softy.assertTrue(element.text == buildConfigurationName)
+
+        val createdBuildType = (superUserCheckRequests.getRequest(Endpoint.BUILD_TYPES)?.read(testData.buildType?.name))
+        softy.assertEquals((createdBuildType as BuildType).name, testData.buildType?.name, "Build type by this id doesn't exist")
     }
 
     @Test(description = "User cannot create build configuration with empty name for existing project", groups = ["Regression, Positive"])
@@ -71,8 +75,9 @@ class CreateBuildConfigurationTest : BaseUiTest() {
         ProjectPage.open(createdProject.id)
 
         var elements = `$$`(".MiddleEllipsis__searchable--uZ")
-            //.filterBy(Condition.empty)
 
         softy.assertTrue(elements.isEmpty)
+        val createdBuildType = (superUserCheckRequests.getRequest(Endpoint.BUILD_TYPES)?.read(testData.buildType?.name))
+        softy.assertNotEquals(buildConfigurationName, createdBuildType, "Build type by this id does exist!")
     }
 }
