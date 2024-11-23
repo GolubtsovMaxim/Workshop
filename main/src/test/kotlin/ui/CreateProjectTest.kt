@@ -11,8 +11,6 @@ import org.testng.annotations.Test
 
 class CreateProjectTest : BaseUiTest() {
 
-    private val REPO_URL : String = "https://github.com/AlexPshe/spring-core-for-qa"
-
     @Test(description = "User should be able to create a project", groups = ["Regression"])
     fun userCreatesProject() {
 
@@ -21,7 +19,6 @@ class CreateProjectTest : BaseUiTest() {
         CreateProjectPage.open("_Root")
             .createForm(REPO_URL)
             .setupProject(testData.project!!.name, testData.buildType!!.name!!)
-
 
         var createdProject = superUserCheckRequests.getRequest(Endpoint.PROJECT)?.read("name:${testData.project!!.name}") as Project?
         softy.assertNotNull(createdProject)
@@ -57,4 +54,5 @@ class CreateProjectTest : BaseUiTest() {
         // (корректность считывания данных и отображение данных на UI)
         step("Check that error appears `Project name must not be empty`")
     }
+
 }
