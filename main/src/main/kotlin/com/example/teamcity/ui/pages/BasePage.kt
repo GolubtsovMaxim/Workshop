@@ -7,6 +7,7 @@ import java.time.Duration
 
 abstract class BasePage {
     protected val BASE_WAITING: Duration = Duration.ofSeconds(30)
+    protected val LONG_WAITING: Duration = Duration.ofMinutes(10)
 
     protected fun <T : BasePageElement> generatePageElements(collection: ElementsCollection, creator: (SelenideElement) -> T): List<T> {
         var result = collection.map(creator).toList()
