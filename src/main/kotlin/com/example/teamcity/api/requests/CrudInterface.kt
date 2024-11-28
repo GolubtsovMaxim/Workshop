@@ -1,3 +1,5 @@
+package com.example.teamcity.api.requests
+
 import com.example.teamcity.api.models.BaseModel
 
 interface CrudInterface {
