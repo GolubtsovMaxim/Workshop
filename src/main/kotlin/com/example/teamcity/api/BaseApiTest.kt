@@ -1,7 +1,6 @@
 package com.example.teamcity.api
 
 import com.example.teamcity.api.generators.TestDataGenerator.generate
-import com.example.teamcity.api.models.AuthModule
 import com.example.teamcity.api.models.AuthModules
 import com.example.teamcity.api.models.ServerAuthSettings
 import com.example.teamcity.api.requests.ServerAuthRequest
