@@ -3,6 +3,10 @@ name: Teamcity Setup
 runs:
   using: composite
   steps:
+    - name: Make mvnw and all scripts executable
+      shell: bash
+      run: chmod -R +x ./
+
     - name: Setup JDK
       uses: actions/setup-java@v4
       with:
