@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.example.teamcity.api.requests.checked
 
 import com.example.teamcity.api.enums.Endpoint
