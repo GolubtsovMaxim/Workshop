@@ -1,0 +1,25 @@
+name: TeamCity deployment
+
+on: push
+
+jobs:
+# Сборка бэка и деплой на стейдж
+  backend:
+    uses: ./.github/workflows/backend-stage.yml
+
+  frontend:
+    uses: ./.github/workflows/frontend-stage.yml
+
+  #run api tests
+  automation-api:
+    needs: [backend, frontend]
+    uses: ./.github/workflows/automation.yml
+    with:
+      package: api
+
+  #run ui tests
+  automation-ui:
+    needs: [backend, frontend]
+    uses: ./.github/workflows/automation.yml
+    with:
+      package: api
