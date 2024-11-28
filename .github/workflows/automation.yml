@@ -37,6 +37,6 @@ jobs:
 
       - name: Run tests
         continue-on-error: true
-        run: ./mvnw test -Dtest='com.example.teamcity.${{ inputs.package }}.**Test' -Dgroups=Regression
+        run: ./mvnw test -Dtest='com.example.teamcity.${{ inputs.package }}.**' -Dgroups=Regression
 
 

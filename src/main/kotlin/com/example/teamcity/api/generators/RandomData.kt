@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.teamcity.api.generators
 
 import org.apache.commons.lang3.RandomStringUtils
