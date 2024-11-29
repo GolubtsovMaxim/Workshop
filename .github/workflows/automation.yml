@@ -37,6 +37,6 @@ jobs:
 
       - name: Run tests
         continue-on-error: true
-        run: ./mvnw clean test -X
+        run: ./mvnw test -X
 
 
