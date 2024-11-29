@@ -11,7 +11,7 @@ import org.apache.http.HttpStatus
 import org.hamcrest.Matchers
 import org.testng.annotations.Test
 
-@Test(groups = ["Regression"])
+//@Test(groups = ["Regression"])
 class BuildTypeTest : BaseApiTest() {
 
     @Test(description = "User should be able to create build type", groups = ["Positive", "CRUD"])
