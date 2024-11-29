@@ -51,9 +51,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>  <!-- Specify the path to your TestNG suite XML file if you use one -->
-                    </suiteXmlFiles>
+<!--                    <suiteXmlFiles>-->
+<!--                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>  &lt;!&ndash; Specify the path to your TestNG suite XML file if you use one &ndash;&gt;-->
+<!--                    </suiteXmlFiles>-->
                     <includes>
                         <include>**/*.kt</include> <!-- Ensure test classes are picked up -->
                     </includes>
